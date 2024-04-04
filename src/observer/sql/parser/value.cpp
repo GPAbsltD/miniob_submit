@@ -72,6 +72,13 @@ int char_date_to_int(const char *date){
   return 10000*year + 100*month + day;
 }
 
+bool is_leap(int year){
+  if (year % 400 == 0) return true;
+  if (year % 100 == 0) return false;
+  if (year % 4 == 0) return true;
+  return false;
+}
+
 bool date_validation(int val){
   int day = val % 100, month = (val % 10000) / 100, year = val / 10000;
   bool warn = false;
@@ -83,7 +90,7 @@ bool date_validation(int val){
   {
     warn = true;
   }
-  else if ( month == 2 && ( ( (year % 4 != 0 || year % 400 == 0) && day > 28) || (year % 4 != 0 && day > 29) ) )
+  else if ( month == 2 && ( ( is_leap(year) && day > 29) || ( !is_leap(year) && day > 28) ) )
   {
     warn = true;
   }

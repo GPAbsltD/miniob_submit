@@ -113,3 +113,4 @@ private:
 
 int char_date_to_int(const char *s);
 bool date_validation(int val);
+bool is_leap(int year);
