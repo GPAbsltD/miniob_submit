@@ -187,6 +187,10 @@ void Value::set_string(const char *s, int len /*= 0*/)
   length_ = str_value_.length();
 }
 
+void Value::set_string(std::string s){
+  str_value_ = s;
+}
+
 void Value::set_date(int val)
 {
   if (date_validation(val))

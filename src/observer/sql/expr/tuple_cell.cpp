@@ -19,13 +19,40 @@ See the Mulan PSL v2 for more details. */
 #include "common/lang/comparator.h"
 #include "common/lang/string.h"
 
-TupleCellSpec::TupleCellSpec(const char *table_name, const char *field_name, const char *alias)
+void aggr_to_string(const AggrOp aggr, std::string& aggr_repr){
+  switch (aggr) {
+    case AggrOp::AGGR_AVG:
+      aggr_repr = "AVG";
+      break;
+    case AggrOp::AGGR_MAX:
+      aggr_repr = "MAX";
+      break;
+    case AggrOp::AGGR_MIN:
+      aggr_repr = "MIN";
+      break;
+    case AggrOp::AGGR_SUM:
+      aggr_repr = "SUM";
+      break;
+    case AggrOp::AGGR_COUNT_ALL:
+    case AggrOp::AGGR_COUNT:
+      aggr_repr = "COUNT";
+      break;
+    default:
+      aggr_repr = "";
+      break;
+  }
+}
+
+TupleCellSpec::TupleCellSpec(const char *table_name, const char *field_name, const char *alias, const AggrOp aggr)
 {
   if (table_name) {
     table_name_ = table_name;
   }
   if (field_name) {
     field_name_ = field_name;
+  }
+  if (aggr) {
+    aggr_ = aggr;
   }
   if (alias) {
     alias_ = alias;
@@ -35,12 +62,30 @@ TupleCellSpec::TupleCellSpec(const char *table_name, const char *field_name, con
     } else {
       alias_ = table_name_ + "." + field_name_;
     }
+
+    if (aggr_ == AggrOp::AGGR_COUNT_ALL) {
+      alias_ = "COUNT(*)";
+    } else if (aggr_ != AggrOp::AGGR_NONE) {
+      std::string aggr_repr;
+      aggr_to_string(aggr_, aggr_repr);
+      alias_ = aggr_repr + '(' + alias_ + ')';
+    }
   }
 }
 
-TupleCellSpec::TupleCellSpec(const char *alias)
+TupleCellSpec::TupleCellSpec(const char *alias, const AggrOp aggr)
 {
+  if (aggr) {
+    aggr_ = aggr;
+  }
   if (alias) {
     alias_ = alias;
+    if (aggr_ == AggrOp::AGGR_COUNT_ALL) {
+      alias_ = "COUNT(*)";
+    } else if (aggr_ != AggrOp::AGGR_NONE) {
+      std::string aggr_repr;
+      aggr_to_string(aggr_, aggr_repr);
+      alias_ = aggr_repr + '(' + alias_ + ')';
+    }
   }
 }

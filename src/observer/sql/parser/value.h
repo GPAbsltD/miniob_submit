@@ -69,6 +69,7 @@ public:
   void set_float(float val);
   void set_boolean(bool val);
   void set_string(const char *s, int len = 0);
+  void set_string(std::string s);
   void set_date(int val);
   void set_value(const Value &value);
 
