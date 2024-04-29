@@ -72,7 +72,7 @@ RC AggregatePhysicalOperator::next()
           }
           break;
         case AggrOp::AGGR_MAX:
-          if (attr_type == AttrType::INTS || attr_type == AttrType::FLOATS) {
+          if (attr_type == AttrType::INTS || attr_type == AttrType::FLOATS || attr_type == AttrType::DATES) {
             result_cells[cell_idx].set_float(std::max(result_cells[cell_idx].get_float(), cell.get_float()));
           } else if (attr_type == AttrType::CHARS) {
             if (cell.get_string() > result_cells[cell_idx].get_string()){
@@ -81,7 +81,7 @@ RC AggregatePhysicalOperator::next()
           }
           break;
         case AggrOp::AGGR_MIN:
-          if (attr_type == AttrType::INTS || attr_type == AttrType::FLOATS) {
+          if (attr_type == AttrType::INTS || attr_type == AttrType::FLOATS || attr_type == AttrType::DATES) {
             result_cells[cell_idx].set_float(std::min(result_cells[cell_idx].get_float(), cell.get_float()));
           } else if (attr_type == AttrType::CHARS) {
             if (cell.get_string() < result_cells[cell_idx].get_string()){
