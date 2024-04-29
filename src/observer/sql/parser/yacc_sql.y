@@ -581,7 +581,7 @@ rel_attr_aggr_list:
     {
       $$ = nullptr;
     }
-    | COMMA rel_attr attr_list {
+    | COMMA rel_attr_aggr rel_attr_aggr_list {
       if ($3 != nullptr) {
         $$ = $3;
       } else {
