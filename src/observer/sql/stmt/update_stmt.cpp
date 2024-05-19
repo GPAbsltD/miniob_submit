@@ -51,19 +51,21 @@ RC UpdateStmt::create(Db *db, const UpdateSqlNode &update_sql, Stmt *&stmt)
   std::unordered_map<std::string, Table *> table_map;
   table_map.insert(std::pair<std::string, Table *>(table_name, table));
   FilterStmt *filter_stmt = nullptr;
-  RC rc = FilterStmt::create(
+
+  RC rc = RC::SUCCESS;
+  rc = FilterStmt::create(
     db,
     table,
     &table_map,
     update_sql.conditions.data(),
     static_cast<int>(update_sql.conditions.size()),
     filter_stmt
-    );
+  );
 
   Value value = update_sql.value;
   Field field = Field(table, field_meta);
 
   stmt = new UpdateStmt(table, field, value, filter_stmt);
 
-  return RC::SUCCESS;
+  return rc;
 }
