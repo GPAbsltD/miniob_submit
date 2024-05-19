@@ -33,6 +33,8 @@ std::string physical_operator_type_name(PhysicalOperatorType type)
       return "AGGREGATE";
     case PhysicalOperatorType::DELETE:
       return "DELETE";
+    case PhysicalOperatorType::UPDATE:
+      return "UPDATE";
     case PhysicalOperatorType::PROJECT:
       return "PROJECT";
     case PhysicalOperatorType::STRING_LIST:

@@ -448,6 +448,17 @@ RC Table::delete_record(const Record &record)
   return rc;
 }
 
+RC Table::update_record(Record &record, int offset, int len, Value &value){
+  RC rc = RC::SUCCESS;
+  rc = record_handler_->update_record(&record.rid(), offset, len, value);
+  if (rc != RC::SUCCESS) {
+    LOG_ERROR("update record failed. table name=%s, rc=%s", table_meta_.name(), strrc(rc));
+    return rc;
+  }
+
+  return RC::SUCCESS;
+}
+
 RC Table::insert_entry_of_indexes(const char *record, const RID &rid)
 {
   RC rc = RC::SUCCESS;

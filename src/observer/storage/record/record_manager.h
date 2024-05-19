@@ -182,6 +182,13 @@ public:
   RC delete_record(const RID *rid);
 
   /**
+   * @brief 更新指定的记录
+   *
+   * @param rid 要更新的记录标识
+   */
+  RC update_record(RID *rid, int offset, int len, Value &value);
+
+  /**
    * @brief 获取指定位置的记录数据
    *
    * @param rid 指定的位置
@@ -274,6 +281,16 @@ public:
    * @param rid         返回该记录的标识符
    */
   RC insert_record(const char *data, int record_size, RID *rid);
+
+  /**
+   * @brief 更新一个记录到指定文件中，并返回该记录的标识符
+   * 
+   * @param rid         返回该记录的标识符
+   * @param offset      更新记录的偏移量
+   * @param len         更新记录的长度
+   * @param value       记录被更新后的值
+   */
+  RC update_record(RID *rid, int offset, int len, Value &value);
 
    /**
    * @brief 数据库恢复时，在指定文件指定位置插入数据
