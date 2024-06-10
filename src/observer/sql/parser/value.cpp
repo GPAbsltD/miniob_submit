@@ -289,7 +289,7 @@ int Value::compare(const Value &other) const
       } break;
       case BOOLEANS: {
         return common::compare_int((void *)&this->num_value_.bool_value_, (void *)&other.num_value_.bool_value_);
-      }
+      } break;
       case DATES: {
         return common::compare_date((void *)&this->num_value_.date_value_, (void *)&other.num_value_.date_value_);
       } break;
@@ -297,12 +297,30 @@ int Value::compare(const Value &other) const
         LOG_WARN("unsupported type: %d", this->attr_type_);
       }
     }
-  } else if (this->attr_type_ == INTS && other.attr_type_ == FLOATS) {
+  } 
+  else if (this->attr_type_ == INTS && other.attr_type_ == FLOATS) {
     float this_data = this->num_value_.int_value_;
     return common::compare_float((void *)&this_data, (void *)&other.num_value_.float_value_);
-  } else if (this->attr_type_ == FLOATS && other.attr_type_ == INTS) {
+  } 
+  else if (this->attr_type_ == FLOATS && other.attr_type_ == INTS) {
     float other_data = other.num_value_.int_value_;
     return common::compare_float((void *)&this->num_value_.float_value_, (void *)&other_data);
+  } 
+  else if (this->attr_type_ == FLOATS && other.attr_type_ == CHARS) {
+    float other_data = std::stof(other.str_value_);
+    return common::compare_float((void *)&this->num_value_.float_value_, (void *)&other_data);
+  } 
+  else if (this->attr_type_ == CHARS && other.attr_type_ == FLOATS) {
+    float this_data = std::stof(this->str_value_);
+    return common::compare_float((void *)&this_data, (void *)&other.num_value_.float_value_);
+  }
+  else if (this->attr_type_ == INTS && other.attr_type_ == CHARS) {
+    int other_data = (int)std::stol(other.str_value_);
+    return common::compare_float((void *)&this->num_value_.float_value_, (void *)&other_data);
+  } 
+  else if (this->attr_type_ == CHARS && other.attr_type_ == INTS) {
+    int this_data = (int)std::stof(this->str_value_);
+    return common::compare_float((void *)&this_data, (void *)&other.num_value_.float_value_);
   }
   LOG_WARN("not supported");
   return -1;  // TODO return rc?
